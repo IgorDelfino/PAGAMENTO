@@ -89,7 +89,7 @@ class CreditCardController extends Controller
 
     public function transaction(){
         //inicializamos o client
-        $pagarme = new PagarMe\Client(env('PAGAR_ME_API_KEY'));
+        $pagarme = new PagarMe\Client(env('PAGAR_ME_API_KEY'));//aqui vc coloca o nome da variavel do .env
         
         $transaction = $pagarme->transactions()->create([
         'amount' => 1000,

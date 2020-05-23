@@ -13,7 +13,14 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::post('transaction', 'CardController@transaction');
+Route::post('transaction', 'CreditCardController@transaction');
+
+//user routes
+Route::get('users', 'UserController@index');
+Route::get('user/{id}', 'UserController@show');
+Route::post('user', 'UserController@store');
+Route::put('user/{id}', 'UserController@update');
+Route::delete('user/{id}', 'UserController@destroy');
 
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
