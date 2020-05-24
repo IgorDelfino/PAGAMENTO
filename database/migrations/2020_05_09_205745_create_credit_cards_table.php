@@ -19,7 +19,8 @@ class CreateCreditCardsTable extends Migration
             $table->string('number');
             $table->string('cvv');
             $table->string('valid');
-            $table->unsignedBigInteger('user_id');
+            $table->string('name');
+            $table->unsignedBigInteger('user_id')->unique();
         });
         Schema::table('credit_cards', function (Blueprint $table) {
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

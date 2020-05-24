@@ -50,11 +50,11 @@ class CreditCardController extends Controller
         $creditCard->cvv = $request->cvv;
         $creditCard->name = $request->name;
         $creditCard->user_id= $request->user_id;
-        $creditCard->card_hash= $request->card_hash;
+        
 
         $creditCard->save();
 
-        return response()->json(  $creditCard]);
+        return response()->json( [ $creditCard]);
     }
 
     /**
@@ -126,13 +126,13 @@ class CreditCardController extends Controller
 
     public function transaction(){
         //inicializamos o client
-        $pagarme = new PagarMe\Client(env('PAGAR_ME_API_KEY'));//aqui vc coloca o nome da variavel do .env
+        $pagarme = new PagarMe\Client('ak_test_6YwpRqyxcK0jWHFViGmwd18styDva0');//aqui vc coloca o nome da variavel do .env
         
         $transaction = $pagarme->transactions()->create([
         'amount' => 1000,
         'payment_method' => 'credit_card',
         'card_holder_name' => 'Anakin Skywalker',
-        'card_cvv' => '905',
+        'card_cvv' => '315',
         'card_number' => '5191421139442442',
         'card_expiration_date' => '0522',
         'customer' => [
@@ -143,7 +143,7 @@ class CreditCardController extends Controller
             'documents' => [
               [
                 'type' => 'cpf',
-                'number' => '12484104758'
+                'number' => '18476641729'
               ]
             ],
             'phone_numbers' => [ '+551199999999' ],

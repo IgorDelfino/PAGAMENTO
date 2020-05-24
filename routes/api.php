@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,7 +27,7 @@ Route::delete('user/{id}', 'UserController@destroy');
 
 Route::post('creditCard', 'CreditCardController@store');
 Route::put('creditCard/{id}', 'CreditCardController@update');
-Route::delete('creditCard/{id}', 'CreditCardCintroller@destroy')
+Route::delete('creditCard/{id}', 'CreditCardCintroller@destroy');
 
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
