@@ -18,7 +18,9 @@ class CreditCardController extends Controller
      */
     public function index()
     {
-        //
+       $creditCards = CreditCard::all();
+
+       return response()->json([$creditCards]);
     }
 
     /**
@@ -26,10 +28,11 @@ class CreditCardController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        //
-    }
+    // public function create(Request $request)
+    // {
+
+
+    // }
 
     /**
      * Store a newly created resource in storage.
@@ -39,7 +42,19 @@ class CreditCardController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
+        $creditCard = new CreditCard;
+
+        $creditCard->number = $request->number;
+        $creditCard->valid = $request->validad;
+        $creditCard->cvv = $request->cvv;
+        $creditCard->name = $request->name;
+        $creditCard->user_id= $request->user_id;
+        $creditCard->card_hash= $request->card_hash;
+
+        $creditCard->save();
+
+        return response()->json(  $creditCard]);
     }
 
     /**
@@ -50,7 +65,7 @@ class CreditCardController extends Controller
      */
     public function show(CreditCard $creditCard)
     {
-        //
+        // $card =Card::findOrFail()
     }
 
     /**
@@ -61,7 +76,7 @@ class CreditCardController extends Controller
      */
     public function edit(CreditCard $creditCard)
     {
-        //
+        
     }
 
     /**
@@ -71,9 +86,27 @@ class CreditCardController extends Controller
      * @param  \App\CreditCard  $creditCard
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, CreditCard $creditCard)
+    public function update(Request $request, $id)
     {
-        //
+        $creditCard= CreditCard::findOrFail($id);
+
+        if ($request->number){
+            $creditCard->number = $request->number;
+        }
+
+        if ($request->valid){
+            $creditCard->valid = $request->valid;
+        }
+
+        if($request->cvv){
+            $creditCard->cvv = $request->cvv;
+        }
+
+        if($request->name){
+            $creditCard->name= $rrequest->name;
+        }
+
+        $creditCard->save();
     }
 
     /**
@@ -82,9 +115,13 @@ class CreditCardController extends Controller
      * @param  \App\CreditCard  $creditCard
      * @return \Illuminate\Http\Response
      */
-    public function destroy(CreditCard $creditCard)
+    public function destroy($id)
     {
-        //
+        $creditCard = CreditCard::findOrFail($id);
+
+        $creditCard = CreditCard::destroy($id);
+
+        return response()->json('Credit Card  destroyed');
     }
 
     public function transaction(){

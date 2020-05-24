@@ -22,6 +22,12 @@ Route::post('user', 'UserController@store');
 Route::put('user/{id}', 'UserController@update');
 Route::delete('user/{id}', 'UserController@destroy');
 
+//Credit Card Routes 
+
+Route::post('creditCard', 'CreditCardController@store');
+Route::put('creditCard/{id}', 'CreditCardController@update');
+Route::delete('creditCard/{id}', 'CreditCardCintroller@destroy')
+
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
