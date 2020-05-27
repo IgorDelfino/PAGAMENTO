@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\CreditCard;
 use Illuminate\Http\Request;
 use PagarMe;
-
+use App\Card;
 
 class CreditCardController extends Controller
 
@@ -40,16 +40,17 @@ class CreditCardController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+   
     public function store(Request $request)
     {
         
         $creditCard = new CreditCard;
 
         $creditCard->number = $request->number;
-        $creditCard->valid = $request->validad;
+        $creditCard->valid = $request->valid;
         $creditCard->cvv = $request->cvv;
         $creditCard->name = $request->name;
-        $creditCard->user_id= $request->user_id;
+        
         
 
         $creditCard->save();
@@ -123,18 +124,55 @@ class CreditCardController extends Controller
 
         return response()->json('Credit Card  destroyed');
     }
+    
+    public function subscription(){
+        $pagarme = new PagarMe\Client('ak_test_eBXEmnZjfEEZttihpSaHdbh3VJjmPA');
+
+        $subscription = $pagarme->subscriptions()->create([
+        'plan_id' => 123456,
+        'payment_method' => 'credit_card',
+        'card_cvv' => '316',
+        'card_number' => '5191421129442442',
+        'card_expiration_date' => '0322',
+        'card_holder_name' => 'isabella vitoria ',
+        'postback_url' => 'http://postbacj.url',
+        'customer' => [
+            'email' => 'time@unix.com',
+            'name' => 'Unix Time',
+            'document_number' => '75948706036',
+            'address' => [
+            'street' => 'Rua de Teste',
+            'street_number' => '100',
+            'complementary' => 'Apto 666',
+            'neighborhood' => 'Bairro de Teste',
+            'zipcode' => '11111111'
+            ],
+            'phone' => [
+            'ddd' => '01',
+            'number' => '923456780'
+            ],
+            'sex' => 'other',
+            'born_at' => '1970-01-01',
+        ],
+        'metadata' => [
+            'foo' => 'bar'
+        ]
+        ]);
+        return response()->json([$subscription]);
+ 
+    }
 
     public function transaction(){
         //inicializamos o client
-        $pagarme = new PagarMe\Client('ak_test_6YwpRqyxcK0jWHFViGmwd18styDva0');//aqui vc coloca o nome da variavel do .env
+        $pagarme = new PagarMe\Client('ak_test_eBXEmnZjfEEZttihpSaHdbh3VJjmPA');//aqui vc coloca o nome da variavel do .env
         
         $transaction = $pagarme->transactions()->create([
         'amount' => 1000,
         'payment_method' => 'credit_card',
         'card_holder_name' => 'Anakin Skywalker',
-        'card_cvv' => '315',
-        'card_number' => '5191421139442442',
-        'card_expiration_date' => '0522',
+        'card_cvv' => '316',
+        'card_number' => '5191421129442442',
+        'card_expiration_date' => '0322',
         'customer' => [
             'external_id' => '1',
             'name' => 'Nome do cliente',
@@ -143,7 +181,7 @@ class CreditCardController extends Controller
             'documents' => [
               [
                 'type' => 'cpf',
-                'number' => '18476641729'
+                'number' => '01568128002'
               ]
             ],
             'phone_numbers' => [ '+551199999999' ],
@@ -193,6 +231,29 @@ class CreditCardController extends Controller
             ]
         ]
         ]);
-        return response()->json([$transaction]);;
+        return response()->json([$transaction]);
     }
+  
+    // public function criarCartao(){
+    //     $pagarme = new PagarMe\Client('ak_test_eBXEmnZjfEEZttihpSaHdbh3VJjmPA');
+    //     $customer = $pagarme->customers()->create([
+    //         'external_id' => '#123456789',
+    //         'name' => 'João das Neves',
+    //         'type' => 'individual',
+    //         'country' => 'br',
+    //         'email' => 'joaoneves@norte.com',
+    //         'documents' => [
+    //         [
+    //             'type' => 'cpf',
+    //             'number' => '18476641729'
+    //         ]
+    //         ],
+    //         'phone_numbers' => [
+    //         '+5511999999999',
+    //         '+5511888888888'
+    //         ],
+    //         'birthday' => '1985-01-01'
+    //     ]);
+    //     return response()->json([$customer]);;
+    // }
 }
