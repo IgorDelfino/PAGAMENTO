@@ -38,6 +38,9 @@
         "psr-4": {
             "App\\": "app/"
         },
+        "pagarme" : {
+            $pagarme = new PagarMe\Client(env('PAGAR_ME_API_KEY'));
+        }
         "classmap": [
             "database/seeds",
             "database/factories"

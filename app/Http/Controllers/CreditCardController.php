@@ -162,17 +162,18 @@ class CreditCardController extends Controller
  
     }
 
-    public function transaction(){
-        //inicializamos o client
-        $pagarme = new PagarMe\Client(env('PAGAR_ME_API_KEY'));//aqui vc coloca o nome da variavel do .env
-        
+    public function transaction()
+    {
+        $pagarme = new PagarMe\Client(env('PAGAR_ME_API_KEY'));
+
         $transaction = $pagarme->transactions()->create([
+        
         'amount' => 1000,
         'payment_method' => 'credit_card',
         'card_holder_name' => 'Anakin Skywalker',
-        'card_cvv' => '230',
-        'card_number' => '5404140046054800',
-        'card_expiration_date' => '1021',
+        'card_cvv' => '905',
+        'card_number' => '5191421139442442',
+        'card_expiration_date' => '0522',
         'customer' => [
             'external_id' => '1',
             'name' => 'Nome do cliente',
@@ -181,7 +182,7 @@ class CreditCardController extends Controller
             'documents' => [
               [
                 'type' => 'cpf',
-                'number' => '01568128002'
+                'number' => '14787805096'
               ]
             ],
             'phone_numbers' => [ '+551199999999' ],
@@ -198,10 +199,44 @@ class CreditCardController extends Controller
               'neighborhood' => 'Jardim Paulistano',
               'zipcode' => '01451001'
             ]
+        ],
+        'shipping' => [
+            'name' => 'Nome de quem receberá o produto',
+            'fee' => 1020,
+            'delivery_date' => '2018-09-22',
+            'expedited' => false,
+            'address' => [
+              'country' => 'br',
+              'street' => 'Avenida Brigadeiro Faria Lima',
+              'street_number' => '1811',
+              'state' => 'sp',
+              'city' => 'Sao Paulo',
+              'neighborhood' => 'Jardim Paulistano',
+              'zipcode' => '01451001'
+            ]
+        ],
+        'items' => [
+            [
+              'id' => '1',
+              'title' => 'R2D2',
+              'unit_price' => 300,
+              'quantity' => 1,
+              'tangible' => true
+            ],
+            [
+              'id' => '2',
+              'title' => 'C-3PO',
+              'unit_price' => 700,
+              'quantity' => 1,
+              'tangible' => true
+            ]
         ]
         ]);
-        return response()->json([$transaction]);
+
+        return response()->json($transaction);
     }
+ 
+
   
     // public function criarCartao(){
     //     $pagarme = new PagarMe\Client('ak_test_eBXEmnZjfEEZttihpSaHdbh3VJjmPA');
