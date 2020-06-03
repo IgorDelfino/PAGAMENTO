@@ -126,15 +126,15 @@ class CreditCardController extends Controller
     }
     
     public function subscription(){
-        $pagarme = new PagarMe\Client('ak_test_eBXEmnZjfEEZttihpSaHdbh3VJjmPA');
+        $pagarme = new PagarMe\Client(env('PAGAR_ME_API_KEY'));
 
         $subscription = $pagarme->subscriptions()->create([
         'plan_id' => 123456,
         'payment_method' => 'credit_card',
-        'card_cvv' => '316',
-        'card_number' => '5191421129442442',
-        'card_expiration_date' => '0322',
-        'card_holder_name' => 'isabella vitoria ',
+        'card_cvv' => '230',
+        'card_number' => '5404140046054800',
+        'card_expiration_date' => '1021',
+        'card_holder_name' => 'isabella vitoria',
         'postback_url' => 'http://postbacj.url',
         'customer' => [
             'email' => 'time@unix.com',
@@ -164,15 +164,15 @@ class CreditCardController extends Controller
 
     public function transaction(){
         //inicializamos o client
-        $pagarme = new PagarMe\Client('ak_test_eBXEmnZjfEEZttihpSaHdbh3VJjmPA');//aqui vc coloca o nome da variavel do .env
+        $pagarme = new PagarMe\Client(env('PAGAR_ME_API_KEY'));//aqui vc coloca o nome da variavel do .env
         
         $transaction = $pagarme->transactions()->create([
         'amount' => 1000,
         'payment_method' => 'credit_card',
         'card_holder_name' => 'Anakin Skywalker',
-        'card_cvv' => '316',
-        'card_number' => '5191421129442442',
-        'card_expiration_date' => '0322',
+        'card_cvv' => '230',
+        'card_number' => '5404140046054800',
+        'card_expiration_date' => '1021',
         'customer' => [
             'external_id' => '1',
             'name' => 'Nome do cliente',
@@ -197,37 +197,6 @@ class CreditCardController extends Controller
               'city' => 'Sao Paulo',
               'neighborhood' => 'Jardim Paulistano',
               'zipcode' => '01451001'
-            ]
-        ],
-        'shipping' => [
-            'name' => 'Nome de quem receberá o produto',
-            'fee' => 1020,
-            'delivery_date' => '2018-09-22',
-            'expedited' => false,
-            'address' => [
-              'country' => 'br',
-              'street' => 'Avenida Brigadeiro Faria Lima',
-              'street_number' => '1811',
-              'state' => 'sp',
-              'city' => 'Sao Paulo',
-              'neighborhood' => 'Jardim Paulistano',
-              'zipcode' => '01451001'
-            ]
-        ],
-        'items' => [
-            [
-              'id' => '1',
-              'title' => 'R2D2',
-              'unit_price' => 300,
-              'quantity' => 1,
-              'tangible' => true
-            ],
-            [
-              'id' => '2',
-              'title' => 'C-3PO',
-              'unit_price' => 700,
-              'quantity' => 1,
-              'tangible' => true
             ]
         ]
         ]);
