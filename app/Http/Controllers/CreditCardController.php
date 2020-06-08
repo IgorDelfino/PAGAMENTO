@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use App\CreditCard;
 use Illuminate\Http\Request;
-use PagarMe;
-use App\Card;
+ use PagarMe;
 
+// require("vendor/autoload.php");
 class CreditCardController extends Controller
 
 {
@@ -18,9 +18,7 @@ class CreditCardController extends Controller
      */
     public function index()
     {
-       $creditCards = CreditCard::all();
-
-       return response()->json([$creditCards]);
+       
     }
 
     /**
@@ -44,18 +42,7 @@ class CreditCardController extends Controller
     public function store(Request $request)
     {
         
-        $creditCard = new CreditCard;
-
-        $creditCard->number = $request->number;
-        $creditCard->valid = $request->valid;
-        $creditCard->cvv = $request->cvv;
-        $creditCard->name = $request->name;
         
-        
-
-        $creditCard->save();
-
-        return response()->json( [ $creditCard]);
     }
 
     /**
@@ -89,27 +76,17 @@ class CreditCardController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $creditCard= CreditCard::findOrFail($id);
-
-        if ($request->number){
-            $creditCard->number = $request->number;
-        }
-
-        if ($request->valid){
-            $creditCard->valid = $request->valid;
-        }
-
-        if($request->cvv){
-            $creditCard->cvv = $request->cvv;
-        }
-
-        if($request->name){
-            $creditCard->name= $rrequest->name;
-        }
-
-        $creditCard->save();
+       
     }
-
+    // public function createCard(Request $request){
+    //     $card = New Card;
+    //     $card->newCard($request);
+    //     //return response()->json($teste);
+    //     return response()->json($card);
+    // }
+    public function createCard(Request $request){
+      
+    }
     /**
      * Remove the specified resource from storage.
      *
@@ -118,51 +95,47 @@ class CreditCardController extends Controller
      */
     public function destroy($id)
     {
-        $creditCard = CreditCard::findOrFail($id);
-
-        $creditCard = CreditCard::destroy($id);
-
-        return response()->json('Credit Card  destroyed');
+        
     }
     
-    public function subscription(){
-        $pagarme = new PagarMe\Client('ak_test_eBXEmnZjfEEZttihpSaHdbh3VJjmPA');
+    // public function subscription(){
+    //     $pagarme = new PagarMe\Client('ak_test_eBXEmnZjfEEZttihpSaHdbh3VJjmPA');
 
-        $subscription = $pagarme->subscriptions()->create([
-        'plan_id' => 123456,
-        'payment_method' => 'credit_card',
-        'card_cvv' => '316',
-        'card_number' => '5191421129442442',
-        'card_expiration_date' => '0322',
-        'card_holder_name' => 'isabella vitoria ',
-        'postback_url' => 'http://postbacj.url',
-        'customer' => [
-            'email' => 'time@unix.com',
-            'name' => 'Unix Time',
-            'document_number' => '75948706036',
-            'address' => [
-            'street' => 'Rua de Teste',
-            'street_number' => '100',
-            'complementary' => 'Apto 666',
-            'neighborhood' => 'Bairro de Teste',
-            'zipcode' => '11111111'
-            ],
-            'phone' => [
-            'ddd' => '01',
-            'number' => '923456780'
-            ],
-            'sex' => 'other',
-            'born_at' => '1970-01-01',
-        ],
-        'metadata' => [
-            'foo' => 'bar'
-        ]
-        ]);
-        return response()->json([$subscription]);
+    //     $subscription = $pagarme->subscriptions()->create([
+    //     'plan_id' => 123456,
+    //     'payment_method' => 'credit_card',
+    //     'card_cvv' => '316',
+    //     'card_number' => '5191421129442442',
+    //     'card_expiration_date' => '0322',
+    //     'card_holder_name' => 'isabella vitoria ',
+    //     'postback_url' => 'http://postbacj.url',
+    //     'customer' => [
+    //         'email' => 'time@unix.com',
+    //         'name' => 'Unix Time',
+    //         'document_number' => '75948706036',
+    //         'address' => [
+    //         'street' => 'Rua de Teste',
+    //         'street_number' => '100',
+    //         'complementary' => 'Apto 666',
+    //         'neighborhood' => 'Bairro de Teste',
+    //         'zipcode' => '11111111'
+    //         ],
+    //         'phone' => [
+    //         'ddd' => '01',
+    //         'number' => '923456780'
+    //         ],
+    //         'sex' => 'other',
+    //         'born_at' => '1970-01-01',
+    //     ],
+    //     'metadata' => [
+    //         'foo' => 'bar'
+    //     ]
+    //     ]);
+    //     return response()->json([$subscription]);
  
-    }
-
-    public function transaction(){
+    // }
+    
+    public function transacao(){
         //inicializamos o client
         $pagarme = new PagarMe\Client('ak_test_eBXEmnZjfEEZttihpSaHdbh3VJjmPA');//aqui vc coloca o nome da variavel do .env
         
@@ -170,9 +143,9 @@ class CreditCardController extends Controller
         'amount' => 1000,
         'payment_method' => 'credit_card',
         'card_holder_name' => 'Anakin Skywalker',
-        'card_cvv' => '316',
-        'card_number' => '5191421129442442',
-        'card_expiration_date' => '0322',
+        'card_cvv' => '844',
+        'card_number' => '5405305853900010',
+        'card_expiration_date' => '0422',
         'customer' => [
             'external_id' => '1',
             'name' => 'Nome do cliente',
@@ -181,7 +154,7 @@ class CreditCardController extends Controller
             'documents' => [
               [
                 'type' => 'cpf',
-                'number' => '01568128002'
+                'number' => '33586078013'
               ]
             ],
             'phone_numbers' => [ '+551199999999' ],
@@ -199,41 +172,72 @@ class CreditCardController extends Controller
               'zipcode' => '01451001'
             ]
         ],
-        'shipping' => [
-            'name' => 'Nome de quem receberá o produto',
-            'fee' => 1020,
-            'delivery_date' => '2018-09-22',
-            'expedited' => false,
-            'address' => [
-              'country' => 'br',
-              'street' => 'Avenida Brigadeiro Faria Lima',
-              'street_number' => '1811',
-              'state' => 'sp',
-              'city' => 'Sao Paulo',
-              'neighborhood' => 'Jardim Paulistano',
-              'zipcode' => '01451001'
-            ]
-        ],
+       
         'items' => [
             [
               'id' => '1',
               'title' => 'R2D2',
               'unit_price' => 300,
               'quantity' => 1,
-              'tangible' => true
+              'tangible' => false
             ],
             [
               'id' => '2',
               'title' => 'C-3PO',
               'unit_price' => 700,
               'quantity' => 1,
-              'tangible' => true
+              'tangible' => false
             ]
-        ]
+          ],
+          'split_rules' => [
+            [
+              'liable' => true,
+              'charge_processing_fee'=> true,
+              'percentage' => '20',
+              'charge_remainder_fee' => false,
+              'recipient_id' => 're_ckb5ji1570u1qs66evriuxocj'
+            ],
+            [
+              'liable' => true,
+              'charge_processing_fee'=> true,
+              'percentage' => '80',
+              'charge_remainder_fee' => false,
+              'recipient_id' => 're_ckb5ns9sd0iu8dq6evxknkucg'
+            ]
+              
+            
+          ]
+
         ]);
         return response()->json([$transaction]);
     }
-  
+    public function recebedor(){
+
+      $pagarme = new PagarMe\Client('ak_test_eBXEmnZjfEEZttihpSaHdbh3VJjmPA');
+
+     $recipient = $pagarme->recipients()->create([
+      'anticipatable_volume_percentage' => '85', 
+      'automatic_anticipation_enabled' => 'true', 
+      
+      'transfer_day' => '5', 
+      'transfer_enabled' => 'true', 
+      'transfer_interval' => 'monthly',
+      'bank_account' => [
+        'bank_code' =>'341',
+        'agencia' =>'3196',
+        'agencia_dv' =>'1',
+        'conta' =>'31696',
+        'conta_dv' =>'6',
+        'type' => 'conta_corrente',
+        'document_number' =>'71128197090',
+        'legal_name' =>'fulano'
+        
+
+      ]
+    ]);
+    return response()->json([$recipient]);
+    }
+    
     // public function criarCartao(){
     //     $pagarme = new PagarMe\Client('ak_test_eBXEmnZjfEEZttihpSaHdbh3VJjmPA');
     //     $customer = $pagarme->customers()->create([

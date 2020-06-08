@@ -14,8 +14,10 @@ use App\User;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::post('transaction', 'CreditCardController@transaction');
+Route::post('transacao', 'CreditCardController@transacao');
 Route::post('subscription', 'CreditCardController@subscription');
+Route::post('card', 'CreditCardController@createCard');
+Route::post('recebedor', 'CreditCardController@recebedor');
 
 //user routes
 Route::get('users', 'UserController@index');
