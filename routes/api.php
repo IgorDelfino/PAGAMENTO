@@ -16,8 +16,10 @@ use App\User;
 */
 Route::post('transacao', 'CreditCardController@transacao');
 Route::post('subscription', 'CreditCardController@subscription');
-Route::post('card', 'CreditCardController@createCard');
+//Route::post('card', 'CreditCardController@createCard');
 Route::post('recebedor', 'CreditCardController@recebedor');
+Route::post('card', 'CreditCardController@store');
+
 
 //user routes
 Route::get('users', 'UserController@index');

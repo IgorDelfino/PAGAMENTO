@@ -13,7 +13,7 @@ class CreateCardsTable extends Migration
      */
     public function up()
     {
-        Schema::create('cards', function (Blueprint $table) {
+        Schema::create('credit_cards', function (Blueprint $table) {
             $table->id();
             // $table->string('id_pagarme')/*->unique()*/;
             $table->string('card_number');

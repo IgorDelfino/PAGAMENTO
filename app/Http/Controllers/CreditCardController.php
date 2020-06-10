@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use App\CreditCard;
 use Illuminate\Http\Request;
- use PagarMe;
+use PagarMe;
+use App\User;
 
 // require("vendor/autoload.php");
 class CreditCardController extends Controller
@@ -41,7 +42,16 @@ class CreditCardController extends Controller
    
     public function store(Request $request)
     {
+        $card = new CreditCard;
         
+        $card->card_number = $request->card_number;
+        $card->card_expiration_date = $request->card_expiration_date;
+        $card->card_holder_name = $request->card_holder_name;
+        $card->card_cvv = $request->card_cvv;
+
+        $card->save();
+
+        return response()->json([$card]);
         
     }
 
@@ -135,30 +145,34 @@ class CreditCardController extends Controller
  
     // }
     
-    public function transacao(){
+    public function transacao(Request $request){
         //inicializamos o client
-        $pagarme = new PagarMe\Client('ak_test_eBXEmnZjfEEZttihpSaHdbh3VJjmPA');//aqui vc coloca o nome da variavel do .env
+        $pagarme = new PagarMe\Client(env('PAGAR_ME_API_KEY'));//aqui vc coloca o nome da variavel do .env
         
+        $creditCard = CreditCard::findOrFail($request->creditCardId);
+
+        $user = User::findOrFail($request->userId);
+
         $transaction = $pagarme->transactions()->create([
-        'amount' => 1000,
+        'amount' => $request->valor,
         'payment_method' => 'credit_card',
-        'card_holder_name' => 'Anakin Skywalker',
-        'card_cvv' => '844',
-        'card_number' => '5405305853900010',
-        'card_expiration_date' => '0422',
+        'card_holder_name' => $creditCard->card_holder_name,
+        'card_cvv' => $creditCard->card_cvv,
+        'card_number' => $creditCard->card_number,
+        'card_expiration_date' => $creditCard->card_expiration_date,
         'customer' => [
-            'external_id' => '1',
-            'name' => 'Nome do cliente',
+            'external_id' => strval($user->id),
+            'name' => $user->name,
             'type' => 'individual',
             'country' => 'br',
             'documents' => [
               [
                 'type' => 'cpf',
-                'number' => '33586078013'
+                'number' => $user->cpf
               ]
             ],
-            'phone_numbers' => [ '+551199999999' ],
-            'email' => 'cliente@email.com'
+            'phone_numbers' => [ $user->phone],
+            'email' => $user->email
         ],
         'billing' => [
             'name' => 'Nome do pagador',
@@ -176,18 +190,11 @@ class CreditCardController extends Controller
         'items' => [
             [
               'id' => '1',
-              'title' => 'R2D2',
+              'title' => 'banana',
               'unit_price' => 300,
               'quantity' => 1,
               'tangible' => false
             ],
-            [
-              'id' => '2',
-              'title' => 'C-3PO',
-              'unit_price' => 700,
-              'quantity' => 1,
-              'tangible' => false
-            ]
           ],
           'split_rules' => [
             [
@@ -195,14 +202,14 @@ class CreditCardController extends Controller
               'charge_processing_fee'=> true,
               'percentage' => '20',
               'charge_remainder_fee' => false,
-              'recipient_id' => 're_ckb5ji1570u1qs66evriuxocj'
+              'recipient_id' => 're_ckb9mjtc20cocen6eo146flpr'
             ],
             [
               'liable' => true,
               'charge_processing_fee'=> true,
               'percentage' => '80',
               'charge_remainder_fee' => false,
-              'recipient_id' => 're_ckb5ns9sd0iu8dq6evxknkucg'
+              'recipient_id' => 're_ckb9mnnfi0d15b26dojulsje7'
             ]
               
             
@@ -213,7 +220,7 @@ class CreditCardController extends Controller
     }
     public function recebedor(){
 
-      $pagarme = new PagarMe\Client('ak_test_eBXEmnZjfEEZttihpSaHdbh3VJjmPA');
+      $pagarme = new PagarMe\Client(env('PAGAR_ME_API_KEY'));
 
      $recipient = $pagarme->recipients()->create([
       'anticipatable_volume_percentage' => '85', 
@@ -224,10 +231,10 @@ class CreditCardController extends Controller
       'transfer_interval' => 'monthly',
       'bank_account' => [
         'bank_code' =>'341',
-        'agencia' =>'3196',
+        'agencia' =>'4233',
         'agencia_dv' =>'1',
-        'conta' =>'31696',
-        'conta_dv' =>'6',
+        'conta' =>'08955',
+        'conta_dv' =>'8',
         'type' => 'conta_corrente',
         'document_number' =>'71128197090',
         'legal_name' =>'fulano'
