@@ -13,6 +13,6 @@ class CreditCard extends Model
 
     public function newCard($request){
         
-    
+    }
 
 }
